@@ -4,6 +4,6 @@ const requestUrl = baseUrl + apiKey + '&q=';
 
 export const loadBooks = (q) => {
 	console.log('q: %s', q);
-	return fetch(requestUrl + q, {'mode': 'no-cors'})
+	return fetch(requestUrl + q)
 		.then(res => res);
 };
