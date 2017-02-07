@@ -65,8 +65,6 @@ class App extends Component {
 					let total = getTotalResults(objBooks);
 					let books = retrieveResults(objBooks);
 
-					console.log(books);
-
 					if (total > 0) {
 						this.setState({
 							books: createFinalBooksObj(books),
@@ -78,6 +76,12 @@ class App extends Component {
 							loading: false
 						});
 					}
+				})
+				.catch(e => {
+					this.setState({
+						loading: false,
+						noResults: true
+					});
 				});
 		});
 	}
