@@ -4,6 +4,7 @@ import './App.css';
 import { SearchForm } from './components/SearchForm';
 import { ListTitle } from './components/ListTitle';
 import { BooksList } from './components/book/BooksList';
+import { loadBooks } from './lib/bookService';
 
 
 class App extends Component {
@@ -39,13 +40,21 @@ class App extends Component {
 	handleSubmit(e) {
 		e.preventDefault();
 
-		this.setState({
-			currentTitle: this.state.title2Search,
-			title2Search: '',
-			errorMessage: ''
+		let p = new Promise((resolve, reject) => {
+			this.setState({
+				currentTitle: this.state.title2Search,
+				title2Search: '',
+				errorMessage: ''
+			}, resolve());
 		});
 
-		//TODO: Search the book
+		// Search the books
+		p.then(() => {
+			loadBooks(this.state.currentTitle)
+				.then(books => {
+					console.log('books:', books);
+				})
+		});
 	}
 
 	handleEmptySubmit(e) {

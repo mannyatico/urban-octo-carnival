@@ -14,7 +14,7 @@ export const SearchForm = (props) => (
 					onChange={props.handleInputChange}
 				/>
 			</div>
-			<button type="submit" className="btn btn-default">Search</button>
+			<button type="submit" className="btn btn-primary">Search</button>
 		</form>
 		{props.errorMessage && <span className="text-danger">{props.errorMessage}</span>}
 	</div>
