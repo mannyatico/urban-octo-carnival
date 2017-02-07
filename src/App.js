@@ -17,7 +17,9 @@ class App extends Component {
 			books: [],
 			currentTitle: '',
 			title2Search: '',
-			errorMessage: ''
+			errorMessage: '',
+			noResults: false,
+			loading: false
 		};
 
 		this.handleInputChange = this.handleInputChange.bind(this);
@@ -36,9 +38,12 @@ class App extends Component {
 
 		let p = new Promise((resolve, reject) => {
 			this.setState({
+				books: [],
 				currentTitle: this.state.title2Search,
 				title2Search: '',
-				errorMessage: ''
+				errorMessage: '',
+				noResults: false,
+				loading: true
 			}, resolve());
 		});
 
@@ -60,9 +65,17 @@ class App extends Component {
 					let total = getTotalResults(objBooks);
 					let books = retrieveResults(objBooks);
 
+					console.log(books);
+
 					if (total > 0) {
 						this.setState({
-							books: createFinalBooksObj(books)
+							books: createFinalBooksObj(books),
+							loading: false
+						});
+					} else {
+						this.setState({
+							noResults: true,
+							loading: false
 						});
 					}
 				});
@@ -109,6 +122,10 @@ class App extends Component {
 							<ListTitle currentTitle={this.state.currentTitle} />
 
 							<BooksList books={this.state.books} />
+
+							{this.state.loading && <div className="text-center"><img src={logo} className="loading" alt="logo" /></div>}
+
+							{this.state.noResults && <h2 className="text-danger">The provided term didn't return results</h2>}
 						</div>
 					</div>
 				</div>

@@ -8,10 +8,10 @@ export const getTotalResults = (obj) => {
 	return obj.query.results[0].GoodreadsResponse[0].search[0].results[0].work.length;
 };
 
-export const createFinalBooksObj = (obj) => {
+export const createFinalBooksObj = (booksArr) => {
 	let finalArr = [];
 
-	obj.map(bookItem => {
+	booksArr.map((bookItem) => {
 		let obj = {
 			id: bookItem.id[0]['_'],
 			title: bookItem['best_book'][0].title[0],
