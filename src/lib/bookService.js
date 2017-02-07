@@ -4,7 +4,11 @@ const requestUrl = baseUrl + apiKey + '&q=';
 
 export const loadBooks = (q) => {
 	return fetch(requestUrl + q, {
-		method: 'GET'
+		mode: 'cors',
+		method: 'GET',
+		headers: {
+			cacheControl: 'no-cache'
+		}
 	})
 		.then(books => books.text());
 };
