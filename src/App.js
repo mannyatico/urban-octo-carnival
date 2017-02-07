@@ -6,19 +6,12 @@ import { SearchForm } from './components/SearchForm';
 import { ListTitle } from './components/ListTitle';
 import { BooksList } from './components/book/BooksList';
 import { loadBooks } from './lib/bookService';
+import { retrieveResults, getTotalResults, createFinalBooksObj } from './helpers/bookHelpers';
 
 
 class App extends Component {
 	constructor() {
-		super()
-		// this.state = {
-		// 	books: [
-		// 		{ id: 4640799, title: 'Harry Potter and the Sorcerer\'s Stone', rating: 4.43, author: 'J.K. Rowling', cover: 'https://images.gr-assets.com/books/1474154022m/3.jpg' },
-		// 		{ id: 6231171, title: 'Harry Potter and the Chamber of Secrets', rating: 4.36, author: 'J.K. Rowling', cover: 'https://images.gr-assets.com/books/1474169725m/15881.jpg' },
-		// 		{ id: 2402163, title: 'Harry Potter and the Prisoner of Azkaban', rating: 4.52, author: 'J.K. Rowling', cover: 'https://images.gr-assets.com/books/1362278317m/5.jpg' },
-		// 	],
-		// 	currentTitle: '',
-		// }
+		super();
 
 		this.state = {
 			books: [],
@@ -53,10 +46,26 @@ class App extends Component {
 		p.then(() => {
 			loadBooks(this.state.currentTitle)
 				.then(books => {
-					parseString(books,  (err, res) => {
-						console.log(res);
+					return new Promise((resolve, reject) => {
+						parseString(books, (err, res) => {
+							if (!err) {
+								resolve(res);
+							} else {
+								reject(err);
+							}
+						})
 					})
 				})
+				.then(objBooks => {
+					let total = getTotalResults(objBooks);
+					let books = retrieveResults(objBooks);
+
+					if (total > 0) {
+						this.setState({
+							books: createFinalBooksObj(books)
+						});
+					}
+				});
 		});
 	}
 
@@ -74,7 +83,7 @@ class App extends Component {
 		setTimeout(() => this.setState({
 			errorMessage: ''
 		}), 2500);
-	}
+	};
 
 	render() {
 		const submitHandler = this.state.title2Search ? this.handleSubmit : this.handleEmptySubmit;
