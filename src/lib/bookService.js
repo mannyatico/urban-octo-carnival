@@ -3,7 +3,8 @@ const apiKey = 'Ujgra4GzfeKFgcsd6pNWg';
 const requestUrl = baseUrl + apiKey + '&q=';
 
 export const loadBooks = (q) => {
-	console.log('q: %s', q);
-	return fetch(requestUrl + q)
-		.then(res => res);
+	return fetch(requestUrl + q, {
+		method: 'GET'
+	})
+		.then(books => books.text());
 };

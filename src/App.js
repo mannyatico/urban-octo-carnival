@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {parseString} from 'xml2js';
 import logo from './logo.svg';
 import './App.css';
 import { SearchForm } from './components/SearchForm';
@@ -52,7 +53,9 @@ class App extends Component {
 		p.then(() => {
 			loadBooks(this.state.currentTitle)
 				.then(books => {
-					console.log('books:', books);
+					parseString(books,  (err, res) => {
+						console.log(res);
+					})
 				})
 		});
 	}
